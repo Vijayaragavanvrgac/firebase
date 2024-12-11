@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="hi.css">
+</head>
+<body>
+    <div class="box">
+        <div class="form">
+            <h2>Login Form</h2>
+            <form id="loginForm">
+                <div class="inputbox">
+                    <input type="text" id="username" required>
+                    <span>Username</span>
+                </div>
+                <div class="inputbox">
+                    <input type="email" id="email" required>
+                    <span>Email</span>
+                </div>
+                <div class="inputbox">
+                    <input type="text" id="phone" required>
+                    <span>Phone Number</span>
+                </div>
+                <button type="submit" class="sub">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCXoDWlvscHYP063NNmX4ZfOBxZsf9ztnQ",
+            authDomain: "loginpage-165b5.firebaseapp.com",
+            projectId: "loginpage-165b5",
+            storageBucket: "loginpage-165b5.appspot.com",
+            messagingSenderId: "302192099511",
+            appId: "1:302192099511:web:0350769701505892cb4d32"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // Add event listener to the form
+        document.getElementById("loginForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const username = document.getElementById("username").value;
+            const email = document.getElementById("email").value;
+            const phone = document.getElementById("phone").value;
+
+            if (username && email && phone) {
+                // Save user data to Firebase
+                set(ref(db, `users/${username}`), {
+                    username: username,
+                    email: email,
+                    phoneNumber: phone
+                })
+                .then(() => {
+                    alert("Login Successful!");
+                })
+                .catch((error) => {
+                    alert("Error: " + error.message);
+                });
+            } else {
+                alert("All fields are required!");
+            }
+        });
+    </script>
+</body>
+</html>
